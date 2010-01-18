@@ -13,7 +13,8 @@ get '/' do
 end
 
 get '/rnd' do
-  @cards = session[:cards] || SETS.values.flatten
+  session[:cards] ||= SETS.values.flatten
+  @cards = session[:cards]
   @cards = @cards.sort_by{rand}[0,10].sort
   haml :rnd
 end
