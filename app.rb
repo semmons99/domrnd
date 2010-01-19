@@ -1,32 +1,38 @@
 require 'sinatra'
 require 'haml'
 require 'json'
+require 'active_support'
 
-enable :sessions
 set :haml, {:format => :html5 }
 SETS = YAML::load_file 'sets.yml'
 
 get '/' do
-  redirect '/rnd' unless session[:cards].nil?
+  cookie = request.cookies['cards'];
+  redirect '/rnd' unless cookie.nil?
   @sets = SETS.keys
   haml :index
 end
 
 get '/rnd' do
-  session[:cards] ||= SETS.values.flatten
-  @cards = session[:cards]
+  cookie = request.cookies['cards'];
+  cookie ||= SETS.values.flatten.to_json
+  set_cookie('cards', :value => cookie, :expires => 1.year.from_now)
+
+  @cards = JSON.parse(cookie);
   haml :rnd
 end
 
 post '/rnd' do
-  session[:cards] = params.values
+  set_cookie('cards', :value => params.values.to_json, :expires => 1.year.from_now)
   redirect '/rnd'
 end
 
 get '/prefs' do
-  session[:cards] ||= []
+  cookie = request.cookies['cards'];
+  cookie ||= [].to_json
+  set_cookie('cards', :value => cookie, :expires => 1.year.from_now)
 
-  @saved_cards = session[:cards]
+  @saved_cards = JSON.parse(cookie);
   @sets = SETS
   haml :prefs
 end
