@@ -47,6 +47,9 @@ button
     width: 200px
   &.short
     width: 98px
+#footer
+  font:
+    size: 75%
 
 @@ layout
 !!!
@@ -56,6 +59,9 @@ button
     %link(rel='stylesheet' type='text/css' href='/stylesheet.css')
   %body
     = yield
+    #footer
+      %a(href='http://github.com/semmons99/domrnd')
+        Vist project page
     :javascript
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
