@@ -15,7 +15,6 @@ end
 get '/rnd' do
   session[:cards] ||= SETS.values.flatten
   @cards = session[:cards]
-  @cards = @cards.sort_by{rand}[0,10].sort
   haml :rnd
 end
 
@@ -77,14 +76,25 @@ button
   Choose Sets/Cards
 
 @@ rnd
-- @cards.each do |card|
-  = card
-  %br
-%button.normal(type='button' onclick="parent.location='/rnd'")
+:javascript
+  var cards = #{@cards.to_json};
+  function rand() { return Math.round(Math.random()) - 0.5; }
+  function getRandCards() {
+    cards.sort(rand);
+    var decks = cards.slice(0,10);
+    decks.sort();
+    document.getElementById('cards').innerHTML = '';
+    for(var i in decks)
+      document.getElementById('cards').innerHTML += decks[i] + '<br/>';
+  }
+#cards
+%button.normal(type='button' onclick="getRandCards();")
   Generate Another Group
 %br
 %button.normal(type='button' onclick="parent.location='/prefs'")
   Choose Sets/Cards
+:javascript
+  getRandCards();
 
 @@ prefs
 :javascript
