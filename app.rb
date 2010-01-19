@@ -57,6 +57,15 @@ button
     %link(rel='stylesheet' type='text/css' href='/stylesheet.css')
   %body
     = yield
+    :javascript
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    :javascript
+      try {
+        var pageTracker = _gat._getTracker("UA-7938691-6");
+        pageTracker._trackPageview();
+      } catch(err) {}
+      
 
 @@ index
 #div.info
