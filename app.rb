@@ -19,6 +19,8 @@ get '/rnd' do
   set_cookie('cards', :value => cookie, :expires => 1.year.from_now)
 
   @cards = JSON.parse(cookie);
+  @sets = SETS
+  @set_names = SETS.keys.sort
   haml :rnd
 end
 
@@ -90,14 +92,45 @@ button
 @@ rnd
 :javascript
   var cards = #{@cards.to_json};
+  var sets = #{@sets.to_json};
+  var set_names = #{@set_names.to_json};
+
   function rand() { return Math.round(Math.random()) - 0.5; }
+
+  function anyFromSet(set, deck) {
+    rtVal = false;
+    for(var i in sets[set]) {
+      for(var j in deck) {
+        if (sets[set][i] == deck[j])
+          rtVal = true;
+      }
+    }
+    return rtVal;
+  }
+
+  function fromSet(set, card) {
+    for(var i in sets[set]) {
+      if(sets[set][i] == card)
+        return true;
+    }
+    return false;
+  }
+
   function getRandCards() {
     cards.sort(rand);
     var decks = cards.slice(0,10);
     decks.sort();
     document.getElementById('cards').innerHTML = '';
-    for(var i in decks)
-      document.getElementById('cards').innerHTML += decks[i] + '<br/>';
+    for(var set_idx in set_names) {
+      if(anyFromSet(set_names[set_idx], decks) == true) {
+        document.getElementById('cards').innerHTML += '<b>' + set_names[set_idx] + '</b><br/>'
+        for(var i in decks) {
+          if(fromSet(set_names[set_idx], decks[i]))
+            document.getElementById('cards').innerHTML += decks[i] + '<br/>';
+        }
+        document.getElementById('cards').innerHTML += '<br/>'
+      }
+    }
   }
 #cards
 %button.normal(type='button' onclick="getRandCards();")
