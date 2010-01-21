@@ -55,6 +55,8 @@ button
     width: 200px
   &.short
     width: 98px
+  &.tiny
+    width: 47px
 #footer
   font:
     size: 75%
@@ -120,26 +122,73 @@ button
     cards.sort(rand);
     var decks = cards.slice(0,10);
     decks.sort();
-    document.getElementById('cards').innerHTML = '';
+    document.getElementById('sets').innerHTML = '';
     for(var set_idx in set_names) {
       if(anyFromSet(set_names[set_idx], decks) == true) {
-        document.getElementById('cards').innerHTML += '<b>' + set_names[set_idx] + '</b><br/>'
+        document.getElementById('sets').innerHTML += '<b>' + set_names[set_idx] + '</b><br/>'
         for(var i in decks) {
           if(fromSet(set_names[set_idx], decks[i]))
-            document.getElementById('cards').innerHTML += decks[i] + '<br/>';
+            document.getElementById('sets').innerHTML += decks[i] + '<br/>';
         }
-        document.getElementById('cards').innerHTML += '<br/>'
+        document.getElementById('sets').innerHTML += '<br/>'
       }
     }
+    document.getElementById('cards').innerHTML = '';
+    for(var i in decks)
+      document.getElementById('cards').innerHTML += decks[i] + '<br/>'
   }
-#cards
+
+  function setCookie(val) {
+    var exDate = new Date();
+    exDate.setDate(exDate.getDate() + 365);
+    document.cookie = 'visibility=' + escape(val) + ';expires=' + exDate.toGMTString();
+  }
+
+  function hideCards() {
+    document.getElementById('cards_div').style.display = 'none';
+    document.getElementById('sets_div').style.display = 'block';
+    setCookie('sets');
+  }
+
+  function hideSets() {
+    document.getElementById('cards_div').style.display = 'block';
+    document.getElementById('sets_div').style.display = 'none';
+    setCookie('cards');
+  }
+#cards_div
+  #cards
+#sets_div
+  #sets
 %button.normal(type='button' onclick="getRandCards();")
   Generate Another Group
 %br
 %button.normal(type='button' onclick="parent.location='/prefs'")
   Choose Sets/Cards
+%div
+  Show By Set?
+  %button.tiny(type='button' onclick="hideCards();")
+    Yes
+  %button.tiny(type='button' onclick="hideSets();")
+    No
 :javascript
   getRandCards();
+  if (document.cookie.length > 0) {
+    c_start = document.cookie.indexOf('visibility=');
+    if (c_start == -1) {
+      hideSets();
+    } else {
+      c_end = document.cookie.indexOf(";",c_start);
+      if (c_end == -1)
+        c_end = document.cookie.length;
+      if (unescape(document.cookie.substring(c_start,c_end)) == 'visibility=sets') {
+        hideCards();
+      } else {
+        hideSets();
+      }
+    }
+  } else {
+    hideSets();
+  }
 
 @@ prefs
 :javascript
