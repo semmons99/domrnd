@@ -1,0 +1,4 @@
+sinatra
+haml
+json
+activesupport --version 2.3.8
