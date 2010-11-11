@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'haml'
 require 'json'
-require 'active_support'
+require 'active_support/core_ext/time/calculations'
 
 set :haml, {:format => :html5 }
 SETS = YAML::load_file 'sets.yml'
@@ -16,7 +16,11 @@ end
 get '/rnd' do
   cookie = request.cookies['cards'];
   cookie ||= SETS.values.flatten.to_json
-  set_cookie('cards', :value => cookie, :expires => 1.year.from_now)
+  response.set_cookie(
+    'cards',
+    :value => cookie,
+    :expires => Time.current.next_year
+  )
 
   @cards = JSON.parse(cookie);
   @sets = SETS
@@ -25,14 +29,22 @@ get '/rnd' do
 end
 
 post '/rnd' do
-  set_cookie('cards', :value => params.values.to_json, :expires => 1.year.from_now)
+  response.set_cookie(
+    'cards',
+    :value => params.values.to_json,
+    :expires => Time.current.next_year
+  )
   redirect '/rnd'
 end
 
 get '/prefs' do
   cookie = request.cookies['cards'];
   cookie ||= [].to_json
-  set_cookie('cards', :value => cookie, :expires => 1.year.from_now)
+  response.set_cookie(
+    'cards',
+    :value => cookie,
+    :expires => Time.current.next_year
+  )
 
   @saved_cards = JSON.parse(cookie);
   @sets = SETS

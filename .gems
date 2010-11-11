@@ -1,4 +1,4 @@
-sinatra
-haml
-json
-activesupport --version 2.3.8
+sinatra --version 1.1.0
+haml --version 3.0.23
+json --version 1.4.6
+activesupport --version 3.0.1
