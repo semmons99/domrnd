@@ -79,6 +79,7 @@ button
   %head
     %title Dominion Set Randomizer
     %link(rel='stylesheet' type='text/css' href='/stylesheet.css')
+    %meta(name='viewport' content='initial-scale=1.0, user-scalable=no')
   %body
     = yield
     #footer
