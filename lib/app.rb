@@ -1,10 +1,11 @@
 require 'sinatra'
 require 'haml'
+require 'yaml'
 require 'json'
 require 'active_support/core_ext/time/calculations'
 
 set :haml, {:format => :html5 }
-SETS = YAML::load_file 'sets.yml'
+SETS = YAML.load_file File.expand_path("../../data/sets.yml", __FILE__)
 
 get '/' do
   cookie = request.cookies['cards'];
