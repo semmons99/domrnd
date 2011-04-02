@@ -265,4 +265,4 @@ button
   %button.normal(type='submit')
     Save
 :javascript
-  #{@sets.keys.sort.map{|set| "updateSetTxt(#{set.to_json});\n"}}
+  #{@sets.keys.sort.map{|set| "updateSetTxt(#{set.to_json});"}.join("\n")}
