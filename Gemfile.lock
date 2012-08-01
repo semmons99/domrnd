@@ -16,8 +16,8 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  activesupport
-  haml
-  i18n
-  json
-  sinatra
+  activesupport (= 3.0.4)
+  haml (= 3.0.25)
+  i18n (= 0.5.0)
+  json (= 1.5.1)
+  sinatra (= 1.1.2)
