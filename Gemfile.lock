@@ -1,10 +1,12 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.0.4)
+    activesupport (3.1.12)
+      multi_json (~> 1.0)
     haml (3.0.25)
     i18n (0.5.0)
     json (1.5.1)
+    multi_json (1.15.0)
     rack (1.2.2)
     sinatra (1.1.2)
       rack (~> 1.1)
@@ -16,7 +18,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  activesupport (= 3.0.4)
+  activesupport (= 3.1.12)
   haml (= 3.0.25)
   i18n (= 0.5.0)
   json (= 1.5.1)
